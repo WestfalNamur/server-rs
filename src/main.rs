@@ -2,6 +2,7 @@ use std::net::SocketAddr;
 
 use axum;
 use axum::extract::Query;
+use axum::extract::Path;
 use axum::response::Html;
 use axum::response::IntoResponse;
 use axum::routing::get;
@@ -10,7 +11,9 @@ use serde::Deserialize;
 
 #[tokio::main]
 async fn main() {
-    let routes_hello = Router::new().route("/hello", get(handler_hello));
+    let routes_hello = Router::new()
+        .route("/hello", get(handler_hello))
+        .route("/hello2/:name", get(handler_hello2));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     println!("Listening on: {addr}\n");
@@ -28,9 +31,17 @@ struct HelloParams{
     name: Option<String>
 }
 
+// Query extractor allows us to get parameter from query i.e. /hello?name=Jane
 async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
     println!("->> {:12} - handler_hello", "HANDLER");
 
     let name = params.name.as_deref().unwrap_or("World");
+    Html(format!("Hello, {name}!"))
+}
+
+// Path extractor allows us to get parameter from path i.e. /hello/{name}
+async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
+    println!("->> {:12} - handler_hello2", "HANDLER");
+
     Html(format!("Hello, {name}!"))
 }
