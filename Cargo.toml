@@ -6,3 +6,7 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1", features = ["full"] }
 axum = "0.6"
+
+[dev-dependencies]
+httpc-test = "0.1.1"
+anyhow = "1"
