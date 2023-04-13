@@ -9,9 +9,14 @@ use axum::routing::get;
 use axum::Router;
 use serde::Deserialize;
 
+mod error;
+mod web;
+
 #[tokio::main]
 async fn main() {
-    let routes_all = Router::new().merge(routes_hello());
+    let routes_all = Router::new()
+        .merge(routes_hello())
+        .merge(web::routes_login::routes());
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     println!("Listening on: {addr}\n");
