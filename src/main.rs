@@ -3,8 +3,9 @@ use std::net::SocketAddr;
 use axum;
 use axum::extract::Path;
 use axum::extract::Query;
+use axum::middleware;
 use axum::response::Html;
-use axum::response::IntoResponse;
+use axum::response::{IntoResponse, Response};
 use axum::routing::get;
 use axum::Router;
 use serde::Deserialize;
@@ -16,7 +17,9 @@ mod web;
 async fn main() {
     let routes_all = Router::new()
         .merge(routes_hello())
+        .layer(middleware::map_response(main_response_mapper))
         .merge(web::routes_login::routes());
+    // TODO: Fallback
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     println!("Listening on: {addr}\n");
@@ -25,6 +28,14 @@ async fn main() {
         .serve(routes_all.into_make_service())
         .await
         .unwrap();
+}
+
+// middleware
+async fn main_response_mapper(res: Response) -> Response {
+    println!("->> {:12} - main_response_mapper", "RES_MAPPER");
+
+    println!();
+    res
 }
 
 // region: Handler

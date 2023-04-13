@@ -4,4 +4,4 @@ dev:
 
 # Similar to dev but for quick_dev
 quick-test:
-	cargo test -q quick_dev -- --nocapture
+	clear && cargo test -q quick_dev -- --nocapture
