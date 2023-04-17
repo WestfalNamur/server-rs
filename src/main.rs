@@ -9,6 +9,7 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::get;
 use axum::Router;
 use serde::Deserialize;
+use tower_cookies::{CookieManagerLayer};
 
 mod error;
 mod web;
@@ -17,9 +18,11 @@ mod web;
 async fn main() {
     let routes_all = Router::new()
         .merge(routes_hello())
+        // Note: .layer gets executed from bottom to top -> If you want cookie data to be accessible by other layers,
+        // you need to put it at the bottom.
+        .merge(web::routes_login::routes())
         .layer(middleware::map_response(main_response_mapper))
-        .merge(web::routes_login::routes());
-    // TODO: Fallback
+        .layer(CookieManagerLayer::new());
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     println!("Listening on: {addr}\n");
