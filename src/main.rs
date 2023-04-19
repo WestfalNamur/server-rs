@@ -9,7 +9,7 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::get;
 use axum::Router;
 use serde::Deserialize;
-use tower_cookies::{CookieManagerLayer};
+use tower_cookies::CookieManagerLayer;
 
 mod error;
 mod web;

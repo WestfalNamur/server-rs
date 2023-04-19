@@ -6,7 +6,6 @@ use serde::Deserialize;
 use serde_json::{json, Value};
 use tower_cookies::{Cookie, Cookies};
 
-
 pub fn routes() -> Router {
     Router::new().route("/api/login", post(api_login))
 }
