@@ -1,5 +1,4 @@
-use crate::error;
-use crate::web;
+use crate::{error, web};
 use axum::routing::post;
 use axum::{Json, Router};
 use serde::Deserialize;

@@ -5,3 +5,8 @@ dev:
 # Similar to dev but for quick_dev
 quick-test:
 	clear && cargo test -q quick_dev -- --nocapture
+
+qc:
+	clear
+	cargo check
+	cargo +nightly fmt
