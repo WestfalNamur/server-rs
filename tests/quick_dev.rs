@@ -6,7 +6,18 @@ async fn quick_dev() -> Result<()> {
     let hc = httpc_test::new_client("http://localhost:8080")?;
 
     hc.do_post(
-        "/tickets",
+        "/api/login",
+        json!({
+            "username": "usr1",
+            "password": "pwd1"
+        }),
+    )
+    .await?
+    .print()
+    .await?;
+
+    hc.do_post(
+        "/api/tickets",
         json!({
             "title": "title_str"
         }),
@@ -15,7 +26,7 @@ async fn quick_dev() -> Result<()> {
     .print()
     .await?;
 
-    hc.do_get("/tickets").await?.print().await?;
+    hc.do_get("/api/tickets").await?.print().await?;
 
     Ok(())
 }
